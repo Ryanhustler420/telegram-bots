@@ -1,5 +1,5 @@
 name: CI
-env: { CONTAINER_PORT: 8091, TEMP_PORT: 3000 }
+env: { CONTAINER_PORT: 3000, TEMP_PORT: 3000 }
 on:
   workflow_dispatch:
   push:
