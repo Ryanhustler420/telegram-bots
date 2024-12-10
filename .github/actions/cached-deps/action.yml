@@ -1,0 +1,32 @@
+name: Dependencies Cache
+description: "Get the dependencies (via npm) and cache them."
+inputs:
+  caching:
+    description: "Whether to cache dependencies or not."
+    required: false
+    default: "true"
+  prefix:
+    description: "Provide the folder where package.json exists."
+    required: false
+    default: "."
+outputs:
+  used-cached:
+    description: "Whether the cached was used"
+    value: ${{ steps.install.outputs.cache }}
+runs:
+  using: "composite"
+  steps:
+    - name: Cache dependencies
+      if: inputs.caching == 'true'
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ inputs.prefix }}/node_modules
+        key: deps-node-modules-${{ hashFiles('${{ inputs.prefix }}/package-lock.json') }}
+    - name: Install dependencies
+      id: install
+      if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
+      run: |
+        npm install --prefix ${{ inputs.prefix }}
+        echo "::set-output name=cache::'${{ inputs.caching }}'"
+      shell: bash # only if uses "run:" key

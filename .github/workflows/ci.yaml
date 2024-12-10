@@ -1,0 +1,31 @@
+name: CI
+env: { CONTAINER_PORT: 8091, TEMP_PORT: 3000 }
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  dockerize-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Get the code
+        uses: actions/checkout@v4
+      - name: 🐟 Build image
+        run: |
+          docker build -f Dockerfile -t "${{ secrets.WF_DOCKER_IMAGE_NAME }}" . \
+          --build-arg NODE_ENV="production" \
+          --build-arg ADMIN_PASSWORD="${{ secrets.WF_ADMIN_PASSWORD }}" \
+      - name: 🏡 Run image
+        run: docker run -d --name=temp -p ${{ env.TEMP_PORT }}:${{ env.CONTAINER_PORT }} ${{ secrets.WF_DOCKER_IMAGE_NAME }}
+      - name: 💤 Sleep for 10 seconds
+        run: sleep 10
+      - name: 📝 Container Logs
+        run: docker logs
+      - name: 📞 Calling api
+        run: curl http://localhost:${{ env.TEMP_PORT }}/
+      - name: 1️⃣ Docker account login
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.WF_DOCKER_ACCOUNT_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.WF_DOCKER_ACCOUNT_PASSWORD }}
+      - name: 🌩️ Push image to docker hub
+        run: docker push ${{ secrets.WF_DOCKER_IMAGE_NAME }}
