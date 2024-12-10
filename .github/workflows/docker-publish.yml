@@ -18,7 +18,7 @@ jobs:
       - name: 💤 Sleep for 10 seconds
         run: sleep 10
       - name: 📝 Container Logs
-        run: docker logs
+        run: docker logs temp
       - name: 📞 Calling api
         run: curl http://localhost:${{ env.TEMP_PORT }}/
       - name: 1️⃣ Docker account login
