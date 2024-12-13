@@ -1,4 +1,5 @@
-const { exec } = require('child_process');
+const { fetchTokens, insertToken, deleteToken } = require('./supabase');
+const { newProcess, deleteProcess } = require('./helpers');
 const express = require('express');
 const axios = require('axios');
 
@@ -11,9 +12,8 @@ app.get("/", async (req, res) => {
 
 app.post("/bots/create", async (req, res) => {
   const { token, username, password } = req.body;
-  // save this token to db
-
-  exec(`pm2 start bot.js --name=${username} -- --TOKEN=${token}`, (error, stdout, stderr) => {});
+  await insertToken(token, username);
+  await newProcess(username, token);
   res.json({ msg: `Registered ${token}` });
 });
 
@@ -31,14 +31,15 @@ app.post("/bots/send/message", async (req, res) => {
   res.json({ sent: 'ok' });
 });
 
-app.delete("/bots/:token", async (req, res) => {
-  // removes from database
-  // it will show effect on next restart
+app.post("/bots/delete", async (req, res) => {
+  const { username, password } = req.body;
+  deleteToken(username);
+  deleteProcess(username);
   res.json({ ok: 'ok' });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  (await fetchTokens()).forEach(e => newProcess(e?.username, e?.token));
   console.log(`App is running on: ${PORT}`);
-  // get the tokens from db then loop and spin new services.
 });

@@ -34,6 +34,8 @@ Create these branches: `master`
 - WF\_<span style="color:red;">**DOCKER**</span>\_ACCOUNT_PASSWORD : `xxx`
 - WF\_<span style="color:red;">**DOCKER**</span>\_IMAGE_NAME : `ogochukwubeau/telegram-bots`
 - WF\_<span style="color:green;">**ADMIN_PASSWORD**</span> : `abcdef`
+- WF\_<span style="color:green;">**SUPABASE_URL**</span> : `https://xxx.supabase.co`
+- WF\_<span style="color:green;">**SUPABASE_ANON_KEY**</span> : `jwt.goes.here`
 
 > Once you have docker image on dockerhub
 

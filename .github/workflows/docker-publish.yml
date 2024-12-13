@@ -12,7 +12,9 @@ jobs:
         run: |
           docker build -f Dockerfile -t "${{ secrets.WF_DOCKER_IMAGE_NAME }}" . \
             --build-arg NODE_ENV="production" \
-            --build-arg ADMIN_PASSWORD="${{ secrets.WF_ADMIN_PASSWORD }}"
+            --build-arg ADMIN_PASSWORD="${{ secrets.WF_ADMIN_PASSWORD }}" \
+            --build-arg SUPABASE_URL="${{ secrets.WF_SUPABASE_URL }}" \
+            --build-arg SUPABASE_ANON_KEY="${{ secrets.WF_SUPABASE_ANON_KEY }}"
       - name: 🏡 Run image
         run: docker run -d --name=temp -p ${{ env.TEMP_PORT }}:${{ env.CONTAINER_PORT }} ${{ secrets.WF_DOCKER_IMAGE_NAME }}
       - name: 💤 Sleep for 10 seconds

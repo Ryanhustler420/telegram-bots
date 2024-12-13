@@ -2,16 +2,16 @@
 const { createClient } = require('@supabase/supabase-js');
 
 // Set up Supabase client with your Supabase project URL and anon key
-const SUPABASE_URL = 'your-supabase-url';
-const SUPABASE_ANON_KEY = 'your-supabase-anon-key';
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Function to insert a token into the database
-async function insertToken(token) {
+async function insertToken(token, username) {
   const { data, error } = await supabase
     .from('tokens') // Make sure 'tokens' is your table name
     .insert([
-      { token: token }
+      { token: token, username: username }
     ]);
 
   if (error) {
@@ -19,7 +19,7 @@ async function insertToken(token) {
     return;
   }
 
-  console.log('Token inserted:', data);
+  return data;
 }
 
 // Function to fetch all tokens from the database
@@ -33,18 +33,28 @@ async function fetchTokens() {
     return;
   }
 
-  console.log('Fetched tokens:', data);
+  return data;
 }
 
-// Example usage
-(async () => {
-  // Insert a token into the database
-  await insertToken('my-example-token-12345');
+async function deleteToken(username) {
+  const { data, error } = await supabase
+    .from('tokens') // Make sure 'tokens' is your table name
+    .delete()
+    .eq('username', username);
 
-  // Fetch all tokens from the database
-  await fetchTokens();
-})();
+  if (error) {
+    console.error('Error deleting token:', error);
+    return;
+  }
 
+  return data;
+}
+
+module.exports = {
+  insertToken,
+  fetchTokens,
+  deleteToken,
+}
 
 const getRandomFreePort = () => {
   return new Promise((resolve, reject) => {
