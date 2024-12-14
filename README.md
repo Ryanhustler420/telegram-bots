@@ -40,7 +40,7 @@ Create these branches: `master`
 > Once you have docker image on dockerhub
 
 - WF\_<span style="color:green;">**RENDER**</span>\_APP_SERVICE_ID : `-`
-- WF\_<span style="color:green;">**RENDER**</span>\_PROFILE_AUTH_API_TOKEN : `-`
+- WF\_<span style="color:green;">**RENDER**</span>\_PROFILE_AUTH_API_TOKEN : `rnd_igmGQeXkiPVgc8OHyGJMLZqG3UX2`
 
 ## Keep in mind
 
