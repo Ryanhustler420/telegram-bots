@@ -40,7 +40,7 @@ app.post("/bots/delete", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
-  (await deleteAllProcess());
+  // (await deleteAllProcess());
   const tokens = await fetchTokens();
   for (let i = 0; i < tokens.length; i++) {
     console.log(`Starting: /${tokens[i].username}`);
