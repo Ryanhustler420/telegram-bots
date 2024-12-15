@@ -122,9 +122,9 @@ if (tokenArg) {
   bot.on("message", (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
-    // if (!text.startsWith('/')) { // Avoid echoing commands
-    //   bot.sendMessage(chatId, `You said: ${text}`);
-    // }
+    if (!text.startsWith('/')) { // Avoid echoing commands
+      bot.sendMessage(chatId, `You said: ${text}`);
+    }
   });
 } else {
   console.log('No token provided, please provide --TOKEN=? like this');
