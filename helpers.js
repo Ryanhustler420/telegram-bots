@@ -1,7 +1,21 @@
 const { exec } = require('child_process');
 
 const newProcess = async (username, token) => {
-  exec(`pm2 start bot.js --name=${username} -- --TOKEN=${token}`, (error, stdout, stderr) => {});
+  await new Promise((res, rej) => {
+    exec(`pm2 start bot.js --name=${username} -- --TOKEN=${token}`, (error, stdout, stderr) => {
+      if (error) {
+        rej(error);
+        return;
+      }
+  
+      if (stderr) {
+        rej(stderr);
+        return;
+      }
+  
+      res(stdout);
+    });
+  })
 }
 
 const deleteProcess = async (username) => {
