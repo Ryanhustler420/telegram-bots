@@ -1,5 +1,5 @@
 const { fetchTokens, insertToken, deleteToken } = require('./supabase');
-const { newProcess, deleteProcess, status } = require('./helpers');
+const { newProcess, deleteProcess, status, deleteAllProcess } = require('./helpers');
 const express = require('express');
 const axios = require('axios');
 
@@ -40,6 +40,7 @@ app.post("/bots/delete", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
+  (await deleteAllProcess());
   const tokens = await fetchTokens();
   for (let i = 0; i < tokens.length; i++) {
     console.log(`Starting: /${tokens[i].username}`);

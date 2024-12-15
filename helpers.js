@@ -22,6 +22,10 @@ const deleteProcess = async (username) => {
   exec(`pm2 delete ${username}`, (error, stdout, stderr) => {});
 }
 
+const deleteAllProcess = async (username) => {
+  exec(`pm2 delete all`, (error, stdout, stderr) => {});
+}
+
 const status = async () => {
   exec('pm2 status', (error, stdout, stderr) => {
     if (error) {
@@ -42,4 +46,5 @@ module.exports = {
   status,
   newProcess,
   deleteProcess,
+  deleteAllProcess,
 }
