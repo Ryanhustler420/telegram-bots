@@ -32,7 +32,7 @@ jobs:
       - name: 🌩️ Push image to docker hub
         run: docker push ${{ secrets.WF_DOCKER_IMAGE_NAME }}
       - name: ✈️ Workflow Dispatcher
-        uses: OneHox/vanilla-wtf-dispatcher@0.0.1-test
+        uses: gh-actions-projects/vanilla-wtf-dispatcher@0.0.2
         with:
           github_token: "${{ secrets.ONEHOX_GITHUB_TOKEN }}"
           workflowRef: "main"
